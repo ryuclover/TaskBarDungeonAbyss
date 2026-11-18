@@ -289,7 +289,7 @@ namespace TBDA.Presentation.TaskbarWorld
             _petActivityTag = DSPixelUIBuilder.CreateText(
                 _petActorRt, "ActivityBubble", "", 10,
                 DSPixelUIBuilder.DsBorderGold, TextAnchor.MiddleCenter);
-            _petActivityTag.rectTransform.anchoredPosition = new Vector2(0f, 38f);
+            _petActivityTag.rectTransform.anchoredPosition = new Vector2(0f, 62f);
             _petActivityTag.rectTransform.sizeDelta = new Vector2(140f, 18f);
 
             // Floating Popups Layer
