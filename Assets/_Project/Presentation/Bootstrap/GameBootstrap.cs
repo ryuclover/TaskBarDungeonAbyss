@@ -43,6 +43,10 @@ namespace TBDA.Presentation.Bootstrap
 
             _saveRepository = new UnityJsonSaveRepository();
 
+            var careConfigs = database != null ? database.ExtractCareConfigs() : null;
+            var drillConfigs = database != null ? database.ExtractDrillConfigs() : null;
+            _session = new GameSessionService(careConfigs, drillConfigs, null);
+
             // Platform Window Service
             _windowController = GetComponent<Win32TaskbarOverlayController>();
             if (_windowController == null)
@@ -69,8 +73,8 @@ namespace TBDA.Presentation.Bootstrap
 
             // Initialize Views
             _titleView.Initialize(_saveRepository, database, _audio, OnSlotChosen);
-            _introView.Initialize(null, database, _audio, OnIntroCompleted);
-            _taskbarView.Initialize(null, database, _audio, _windowController, ReturnToTitleScreen);
+            _introView.Initialize(_session, database, _audio, OnIntroCompleted);
+            _taskbarView.Initialize(_session, database, _audio, _windowController, ReturnToTitleScreen);
 
             // Start on Single-Screen Title / Multi-Save Selection
             ReturnToTitleScreen();

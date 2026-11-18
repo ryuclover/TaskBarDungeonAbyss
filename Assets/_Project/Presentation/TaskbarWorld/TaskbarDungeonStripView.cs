@@ -135,6 +135,7 @@ namespace TBDA.Presentation.TaskbarWorld
 
         private void SubscribeDomainEvents()
         {
+            if (_session == null || _session.EventBus == null) return;
             _session.EventBus.Subscribe<PetStateUpdatedEvent>(_ => RefreshAllUI());
             _session.EventBus.Subscribe<StatLevelUpEvent>(_ =>
             {
@@ -465,7 +466,8 @@ namespace TBDA.Presentation.TaskbarWorld
             _careSummaryText.rectTransform.anchoredPosition = new Vector2(-132f, 18f);
             _careSummaryText.rectTransform.sizeDelta = new Vector2(240f, 170f);
 
-            var items = _session.GetAllCareItems();
+            var items = _session != null ? _session.GetAllCareItems() : (_db != null ? _db.ExtractCareConfigs() : null);
+            if (items == null) items = new List<CareItemConfig>();
             _foodButtonLabels.Clear();
             _foodIds.Clear();
 

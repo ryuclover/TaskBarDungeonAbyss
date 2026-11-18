@@ -817,7 +817,8 @@ namespace TBDA.Presentation.Intro
 
         private void FinishIntroTransition()
         {
-            _session.CompleteIntroAndAwakenPet(_selectedSpecies, _chosenName);
+            if (_session != null)
+                _session.CompleteIntroAndAwakenPet(_selectedSpecies, _chosenName);
             SetVisible(false);
             _onIntroFinished?.Invoke();
         }
