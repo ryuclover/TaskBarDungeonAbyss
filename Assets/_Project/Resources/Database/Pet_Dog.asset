@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Pet_Dog
+  m_EditorClassIdentifier: TBDA.Data:TBDA.Data:PetSpeciesSO
+  SpeciesId: 0
+  DisplayNamePtBr: "C\xE3ozinho Leal"
+  DescriptionPtBr: Cresceu ao seu lado e agora vigia sua Barra de Tarefas.
+  IdleSprites:
+  - {fileID: 21300000, guid: 77f91692ef131c442a833a5950914bb7, type: 3}
+  - {fileID: 21300000, guid: b31640180c3dc3044b027508955954ba, type: 3}
+  TrainSprite: {fileID: 21300000, guid: 488cf2996e185894fba2238f8dcc926a, type: 3}
+  SleepSprite: {fileID: 21300000, guid: d5c7738b683ba46418b6dc0b3f5bf509, type: 3}
+  FutureEvolutions:
+  - TargetFormId: dog_guardian_hound
+    DisplayName: "C\xE3o Guardi\xE3o de Pedra"
+    MinStrength: 10
+    MinAgility: 0
+    MinVitality: 10
+    MinAffection: 70
+    UnlocksLabyrinthBuilderMode: 0
+  - TargetFormId: dog_labyrinth_architect
+    DisplayName: "Arquic\xE3o do Labirinto"
+    MinStrength: 0
+    MinAgility: 10
+    MinVitality: 8
+    MinAffection: 85
+    UnlocksLabyrinthBuilderMode: 1

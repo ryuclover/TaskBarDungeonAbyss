@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea88782dd4bafd342a140ce341a0e073, type: 3}
+  m_Name: GameDatabase
+  m_EditorClassIdentifier: TBDA.Data::TBDA.Data.GameDatabaseSO
+  PetSpecies:
+  - {fileID: 11400000, guid: a5f70657d4f6f474f8a1f746179863cc, type: 2}
+  - {fileID: 11400000, guid: ce31f1cf26ac2b94ea15446de1209a69, type: 2}
+  - {fileID: 11400000, guid: 25599c55ec0af5a4f9fea0794797f3db, type: 2}
+  CareItems:
+  - {fileID: 11400000, guid: 162526b52d1c43941a81c019e0f000df, type: 2}
+  - {fileID: 11400000, guid: 49bb8dddb36c3744cb89f5b4fe8d741b, type: 2}
+  - {fileID: 11400000, guid: 0f28b9cb90bd83c49a8da17045ce83c0, type: 2}
+  TrainingDrills:
+  - {fileID: 11400000, guid: 419bf0eb342d38c4baa6402341adf424, type: 2}
+  - {fileID: 11400000, guid: 49bb4ed14c3e47947a225609699dbd9d, type: 2}
+  - {fileID: 11400000, guid: 00bb81abcc074484ba13e240eae54f51, type: 2}
+  DungeonStripBg: {fileID: 21300000, guid: 926e62df478525f4386b6e0af4585d90, type: 3}
+  CampfireFrames:
+  - {fileID: 21300000, guid: acd67555b82601e48b69594fa3195b31, type: 3}
+  - {fileID: 21300000, guid: d32cd75c5a78e7e42b2d65e41848a87b, type: 3}
+  PortalGateSprite: {fileID: 21300000, guid: ecf60a4394659db469c182ee8e17cb8b, type: 3}
+  HeartIcon: {fileID: 21300000, guid: 2d2d03907960207418b1c7d1efd5f877, type: 3}
+  NodeCampIcon: {fileID: 21300000, guid: 48ee1435620133241beb37a5aef108c4, type: 3}
+  NodeCombatIcon: {fileID: 21300000, guid: 4540e2966e876c14f9997e11f89017ad, type: 3}
+  NodeTrainIcon: {fileID: 21300000, guid: c321eab41cc7c394bbb8018a6321c342, type: 3}
+  NodeMysteryIcon: {fileID: 21300000, guid: 086d2aa60a729554b8034b5762a722e6, type: 3}
+  IntroAdoptSprite: {fileID: 21300000, guid: 257132c5039cc4d47aece299a44f2c47, type: 3}
+  IntroGrowingSprite: {fileID: 21300000, guid: c00abc5200a4dc842bb4eae12576d30b, type: 3}
+  IntroFarewellSprite: {fileID: 21300000, guid: 9e1c0c20f650f1c4db2b9f5b0ecf4459, type: 3}
+  IntroPcEmailSprite: {fileID: 21300000, guid: 391a3778b0084134ca26672d9a707469, type: 3}

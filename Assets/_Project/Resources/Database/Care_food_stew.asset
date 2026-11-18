@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Care_food_stew
+  m_EditorClassIdentifier: TBDA.Data:TBDA.Data:CareItemSO
+  Config:
+    ItemId: food_stew
+    DisplayName: Sopa Brilhante
+    Description: "Refei\xE7\xE3o quentinha de fogueira (+60 Fome, +30 Energia, +15
+      Afeto)."
+    HungerRestore: 60
+    EnergyRestore: 30
+    AffectionBoost: 15
+    HealthRestore: 25
+    ShardPrice: 10
+  Icon: {fileID: 21300000, guid: ff464c4296945d74a98ecfde7701769c, type: 3}
