@@ -49,15 +49,15 @@ namespace TBDA.Editor
             RunFullProjectSetup(showDialog: true);
         }
 
-        [MenuItem("TaskBar Dungeon Abyss/2. Apagar Save Local (Testar Intro Novamente)", priority = 2)]
+        [MenuItem("TaskBar Dungeon Abyss/2. Apagar Todos os Saves (Resetar 3 Slots)", priority = 2)]
         public static void MenuClearSave()
         {
             var repo = new UnityJsonSaveRepository();
-            repo.DeleteSave();
-            Debug.Log("[TBDA] Save local apagado! Na próxima execução a Intro estilo Stardew/DS será exibida.");
+            repo.DeleteAllSlots();
+            Debug.Log("[TBDA] Todos os saves locais foram apagados!");
             EditorUtility.DisplayDialog(
                 "Task Bar: Dungeon Abyss",
-                "Save local apagado com sucesso!\nAperte Play (▶) para testar a escolha de pet e a Intro desde o começo.",
+                "Todos os 3 slots de save foram apagados com sucesso!\nAperte Play (▶) para abrir a Tela de Seleção de Arquivos limpa.",
                 "OK");
         }
 

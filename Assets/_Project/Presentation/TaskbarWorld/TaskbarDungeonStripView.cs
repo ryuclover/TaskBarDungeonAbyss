@@ -123,6 +123,16 @@ namespace TBDA.Presentation.TaskbarWorld
                 _rootCanvasGo.SetActive(visible);
         }
 
+        public void BindSession(GameSessionService session)
+        {
+            _session = session;
+            if (_session != null)
+            {
+                SubscribeDomainEvents();
+                RefreshAllUI();
+            }
+        }
+
         private void SubscribeDomainEvents()
         {
             _session.EventBus.Subscribe<PetStateUpdatedEvent>(_ => RefreshAllUI());
@@ -366,7 +376,7 @@ namespace TBDA.Presentation.TaskbarWorld
                 ToggleWindowMode);
 
             DSPixelUIBuilder.CreateButton(
-                hirt, "BtnReset", "Novo",
+                hirt, "BtnSavesMenu", "Saves",
                 new Vector2(442f, 0f), new Vector2(52f, 24f),
                 new Color(0.35f, 0.18f, 0.22f, 1f), 10,
                 () => _onRequestResetRun?.Invoke());

@@ -88,8 +88,16 @@ namespace TBDA.Presentation.Intro
             _audio = audio;
             _onIntroFinished = onIntroFinished;
 
-            BuildDualScreenCanvas();
+            BuildSingleScreenCanvas();
             PopulateStarterCardPortraits();
+            SelectSpecies(PetSpeciesId.Dog, playSound: false);
+            ShowStepImmediate(0);
+        }
+
+        public void BindSession(GameSessionService session, Action onIntroFinished = null)
+        {
+            _session = session;
+            if (onIntroFinished != null) _onIntroFinished = onIntroFinished;
             SelectSpecies(PetSpeciesId.Dog, playSound: false);
             ShowStepImmediate(0);
         }
@@ -152,9 +160,9 @@ namespace TBDA.Presentation.Intro
             UpdateWeatherParticles(Time.deltaTime);
         }
 
-        private void BuildDualScreenCanvas()
+        private void BuildSingleScreenCanvas()
         {
-            _rootCanvasGo = new GameObject("DS_IntroCanvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            _rootCanvasGo = new GameObject("IntroCanvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             _rootCanvasGo.transform.SetParent(transform, false);
 
             var canvas = _rootCanvasGo.GetComponent<Canvas>();
@@ -163,79 +171,71 @@ namespace TBDA.Presentation.Intro
 
             var scaler = _rootCanvasGo.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(540f, 810f);
+            scaler.referenceResolution = new Vector2(540f, 740f);
             scaler.matchWidthOrHeight = 0.5f;
 
-            // Nintendo DS Lite / DSi Console Outer Shell
+            // Single Retro Screen Frame (512x712)
             var shell = DSPixelUIBuilder.CreatePanel(
-                _rootCanvasGo.transform, "DS_Shell",
-                new Color(0.10f, 0.11f, 0.17f, 1f),
-                DSPixelUIBuilder.DsBorderSlate,
-                Vector2.zero, new Vector2(528f, 796f));
+                _rootCanvasGo.transform, "IntroShell",
+                DSPixelUIBuilder.DsBgDark, DSPixelUIBuilder.DsBorderGold,
+                Vector2.zero, new Vector2(512f, 712f));
 
-            // Speaker grilles on top shell
-            var speakers = DSPixelUIBuilder.CreateText(
-                shell, "Speakers", "• • • • • •               NINTENDO DS DUAL-SCREEN               • • • • • •", 10,
-                new Color(0.45f, 0.50f, 0.65f, 0.75f), TextAnchor.MiddleCenter);
-            speakers.rectTransform.anchoredPosition = new Vector2(0f, 384f);
-            speakers.rectTransform.sizeDelta = new Vector2(490f, 16f);
-
-            // --- TOP SCREEN (256x192 scaled 2x -> 500x374) ---
+            // Top Area: Pixel Art Cutscene Illustration Screen (488x316)
             var topBezel = DSPixelUIBuilder.CreatePanel(
-                shell, "TopScreen_Bezel",
-                new Color(0.04f, 0.04f, 0.08f, 1f), DSPixelUIBuilder.DsBorderGold,
-                new Vector2(0f, 190f), new Vector2(500f, 376f));
+                shell, "TopIllustrationScreen",
+                new Color(0.04f, 0.04f, 0.08f, 1f), DSPixelUIBuilder.DsBorderSlate,
+                new Vector2(0f, 180f), new Vector2(488f, 316f));
 
             var artGo = new GameObject("TopArt", typeof(RectTransform), typeof(Image), typeof(RectMask2D));
             artGo.transform.SetParent(topBezel, false);
             var artRt = artGo.GetComponent<RectTransform>();
             artRt.anchorMin = Vector2.zero;
             artRt.anchorMax = Vector2.one;
-            artRt.offsetMin = new Vector2(6f, 6f);
-            artRt.offsetMax = new Vector2(-6f, -6f);
+            artRt.offsetMin = new Vector2(4f, 4f);
+            artRt.offsetMax = new Vector2(-4f, -4f);
             _topScreenArt = artGo.GetComponent<Image>();
             _topScreenArt.sprite = DSPixelUIBuilder.GetWhiteSprite();
 
-            // Live Cutscene Atmospheric Particle Layer inside Top Screen
+            // Atmospheric Particle Layer inside Top Illustration
             var weatherGo = new GameObject("WeatherLayer", typeof(RectTransform));
             weatherGo.transform.SetParent(artRt, false);
             _weatherContainer = weatherGo.GetComponent<RectTransform>();
             StretchFull(_weatherContainer, 0f);
             CreateWeatherParticlePool();
 
-            // Pet sprite standing in the memory clearing (128x128 = exact 2x of 64x64 Gen 5 sprite!)
+            // Pet sprite standing in the memory clearing (112x112)
             var petGo = new GameObject("PetSceneSprite", typeof(RectTransform), typeof(Image));
             petGo.transform.SetParent(artRt, false);
             var petRt = petGo.GetComponent<RectTransform>();
-            petRt.anchoredPosition = new Vector2(12f, -66f);
-            petRt.sizeDelta = new Vector2(128f, 128f);
+            petRt.anchoredPosition = new Vector2(12f, -54f);
+            petRt.sizeDelta = new Vector2(112f, 112f);
             _topPetPreview = petGo.GetComponent<Image>();
             _topPetPreview.raycastTarget = false;
 
-            // Cute Pixel Emote Bubble above pet (Stardew Valley / Pokémon HGSS follower style!)
+            // Emote Bubble above pet
             var emotePanel = DSPixelUIBuilder.CreatePanel(
                 artRt, "EmoteBubble",
                 new Color(0.98f, 0.96f, 0.92f, 0.96f), DSPixelUIBuilder.DsBorderGold,
-                new Vector2(48f, -14f), new Vector2(34f, 28f));
+                new Vector2(48f, -4f), new Vector2(34f, 28f));
             _topEmoteBubbleBg = emotePanel.GetComponent<Image>();
             _topEmoteText = DSPixelUIBuilder.CreateText(
                 emotePanel, "EmoteTxt", "♥", 15,
                 new Color(0.92f, 0.28f, 0.42f, 1f), TextAnchor.MiddleCenter);
             StretchFull(_topEmoteText.rectTransform, 2f);
 
-            // Top RPG Chapter Location Banner (Pokémon Emerald / Mystery Dungeon style)
+            // Chapter Location Banner
             var topBanner = DSPixelUIBuilder.CreatePanel(
                 artRt, "TitleBanner",
                 new Color(0.06f, 0.08f, 0.15f, 0.90f), DSPixelUIBuilder.DsBorderGold,
-                new Vector2(0f, 152f), new Vector2(468f, 38f));
+                new Vector2(0f, 128f), new Vector2(468f, 34f));
             _topCaptionText = DSPixelUIBuilder.CreateText(
                 topBanner, "BannerText",
-                "❖ CAPÍTULO I — MANHÃ DE PRIMAVERA", 14,
+                "❖ CAPÍTULO I — MANHÃ DE PRIMAVERA NA VILA", 13,
                 DSPixelUIBuilder.DsBorderGold, TextAnchor.MiddleCenter);
             _topCaptionText.fontStyle = FontStyle.Bold;
-            StretchFull(_topCaptionText.rectTransform, 6f);
+            StretchFull(_topCaptionText.rectTransform, 4f);
 
-            // Chapter Cross-Fade Overlay inside Top Screen
+            // Chapter Cross-Fade Overlay
             var fadeGo = new GameObject("TopChapterFade", typeof(RectTransform), typeof(Image));
             fadeGo.transform.SetParent(artRt, false);
             StretchFull(fadeGo.GetComponent<RectTransform>(), 0f);
@@ -244,34 +244,20 @@ namespace TBDA.Presentation.Intro
             _topChapterFade.color = new Color(0.04f, 0.04f, 0.08f, 0f);
             _topChapterFade.raycastTarget = false;
 
-            // DS Center Hinge + Dual Status LEDs
-            var hinge = DSPixelUIBuilder.CreatePanel(
-                shell, "DS_Hinge",
-                new Color(0.06f, 0.07f, 0.11f, 1f), DSPixelUIBuilder.DsBorderSlate,
-                new Vector2(0f, -2f), new Vector2(512f, 22f));
-            var hingeTitle = DSPixelUIBuilder.CreateText(
-                hinge, "HingeTitle", "  ◆ TASK BAR: DUNGEON ABYSS", 11,
-                DSPixelUIBuilder.DsTextMuted, TextAnchor.MiddleLeft);
-            StretchFull(hingeTitle.rectTransform, 8f);
-            var led = DSPixelUIBuilder.CreateText(
-                hinge, "LED", "● WIRELESS   ● POWER  ", 11,
-                DSPixelUIBuilder.DsAccentGreen, TextAnchor.MiddleRight);
-            StretchFull(led.rectTransform, 8f);
+            // Bottom Area: Interactive Gameplay / Story Interaction Screen (488x348)
+            var bottomScreen = DSPixelUIBuilder.CreatePanel(
+                shell, "BottomInteractionScreen",
+                DSPixelUIBuilder.DsPanelMid, DSPixelUIBuilder.DsBorderSlate,
+                new Vector2(0f, -162f), new Vector2(488f, 348f));
 
-            // --- BOTTOM TOUCH SCREEN (500x376) ---
-            var bottomBezel = DSPixelUIBuilder.CreatePanel(
-                shell, "BottomTouchScreen",
-                DSPixelUIBuilder.DsBgDark, DSPixelUIBuilder.DsAccentCyan,
-                new Vector2(0f, -196f), new Vector2(500f, 376f));
+            BuildStep0AdoptPanel(bottomScreen);
+            BuildStepStoryPanel(bottomScreen);
+            BuildStepEmailPanel(bottomScreen);
 
-            BuildStep0AdoptPanel(bottomBezel);
-            BuildStepStoryPanel(bottomBezel);
-            BuildStepEmailPanel(bottomBezel);
-
-            // Fast Skip Button on top-right bezel
+            // Fast Skip Button on top-right of shell
             DSPixelUIBuilder.CreateButton(
-                shell, "SkipIntroBtn", "Pular Prólogo »",
-                new Vector2(194f, 356f), new Vector2(114f, 26f),
+                shell, "SkipIntroBtn", "Pular »",
+                new Vector2(196f, 328f), new Vector2(88f, 26f),
                 new Color(0.18f, 0.20f, 0.32f, 0.92f), 11,
                 () =>
                 {
@@ -281,7 +267,7 @@ namespace TBDA.Presentation.Intro
                     FinishIntroTransition();
                 });
 
-            // White/Cyan Awakening Flash Overlay
+            // Awakening Flash Overlay
             var flashGo = new GameObject("WarpFlash", typeof(RectTransform), typeof(Image));
             flashGo.transform.SetParent(_rootCanvasGo.transform, false);
             StretchFull(flashGo.GetComponent<RectTransform>(), 0f);
